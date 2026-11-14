@@ -10,18 +10,48 @@
  */
 class Solution {
     public ListNode sortList(ListNode head) {
-        List<Integer> al= new ArrayList<>();
-        ListNode temp = head;
-        while(temp!=null){
-            al.add(temp.val);
-            temp= temp.next;
+        if(head==null||head.next==null)
+            return head;
+        ListNode middle = findMiddle(head);
+        ListNode lefthead=head;
+        ListNode righthead=middle.next;
+        middle.next=null;
+        lefthead=sortList(lefthead);
+        righthead=sortList(righthead);
+        return mergeTwoList(lefthead,righthead);
         }
-        Collections.sort(al);
-        temp=head;
-        for(int x:al){
-            temp.val=x;
-            temp=temp.next;
+        ListNode findMiddle(ListNode node){
+            ListNode fast= node;
+            ListNode slow=node;
+            fast=fast.next.next;
+            if(node==null||node.next==null)
+            return node;
+            while(fast!=null&&fast.next!=null){
+                slow=slow.next;
+                fast=fast.next.next;
+            }
+            return slow;
         }
-        return head;
-    }
+        ListNode mergeTwoList(ListNode lefthead,ListNode righthead){
+            ListNode dummy= new ListNode(-1);
+            ListNode mergedHead= dummy;
+            while(lefthead!=null&&righthead!=null){
+                if(lefthead.val<=righthead.val){
+                    dummy.next= lefthead;
+                    lefthead=lefthead.next;
+                }
+                else{
+                    dummy.next=righthead;
+                    righthead=righthead.next;
+                }
+                dummy=dummy.next;
+            }
+            if(lefthead==null){
+                dummy.next=righthead;
+            }
+            else
+                dummy.next=lefthead;
+        
+            return mergedHead.next;
+        }
 }
