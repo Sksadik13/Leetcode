@@ -10,33 +10,24 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-    if(lists==null||lists.length==0)
-        return null;
-    ListNode head =lists[0];
-    for(int i = 1;i<lists.length;i++){
-         head=Merge(head,lists[i]);
-    }
-    return head;
-    }
-    ListNode Merge(ListNode list1,ListNode list2){
-        ListNode dummy =new ListNode(-1);
-        ListNode rhead= dummy;
-        while(list1!=null&&list2!=null){
-            if(list1.val<=list2.val){
-                dummy.next=list1;
-                list1=list1.next;
-            }
-            else{
-                dummy.next=list2;
-                list2=list2.next;
-            }
-            dummy=dummy.next;
+        if(lists==null||lists.length==0){
+            return null;
         }
-        if(list1==null){
-            dummy.next=list2;
+        PriorityQueue<ListNode>pq= new PriorityQueue<>((a,b)->a.val-b.val);
+        for(int i =0;i<lists.length;i++){
+            if(lists[i] != null)
+                pq.offer(lists[i]);
         }
-        else
-            dummy.next=list1;
-        return rhead.next;
+        ListNode dummy = new ListNode(-1);
+        ListNode temp = dummy;
+        while(pq.isEmpty()!=true){
+            ListNode current = pq.poll();
+            if(current.next!=null){
+                pq.offer(current.next);
+            }
+            temp.next= current;
+            temp=temp.next;
+        }
+        return dummy.next;
     }
 }
