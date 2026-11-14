@@ -10,21 +10,33 @@
  */
 class Solution {
     public ListNode mergeKLists(ListNode[] lists) {
-        List<Integer>al= new ArrayList<>();
-        for(ListNode head:lists){
-            ListNode temp= head;
-            while(temp!=null){
-                al.add(temp.val);
-                temp=temp.next;
+    if(lists==null||lists.length==0)
+        return null;
+    ListNode head =lists[0];
+    for(int i = 1;i<lists.length;i++){
+         head=Merge(head,lists[i]);
+    }
+    return head;
+    }
+    ListNode Merge(ListNode list1,ListNode list2){
+        ListNode dummy =new ListNode(-1);
+        ListNode rhead= dummy;
+        while(list1!=null&&list2!=null){
+            if(list1.val<=list2.val){
+                dummy.next=list1;
+                list1=list1.next;
             }
+            else{
+                dummy.next=list2;
+                list2=list2.next;
+            }
+            dummy=dummy.next;
         }
-        ListNode result= new ListNode(-1);
-        ListNode resulthead= result;
-        Collections.sort(al);
-        for(int elem:al){
-            result.next=new ListNode(elem);
-            result= result.next;
+        if(list1==null){
+            dummy.next=list2;
         }
-        return resulthead.next;
+        else
+            dummy.next=list1;
+        return rhead.next;
     }
 }
