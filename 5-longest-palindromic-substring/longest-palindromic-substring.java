@@ -2,7 +2,7 @@ class Solution {
     public String longestPalindrome(String s) {
         String result="";
         for(int i=0;i<s.length();i++){
-            for(int j=0;j<s.length();j++){
+            for(int j=i;j<s.length();j++){
                 if(isPalindrome(s,i,j)==true){
                     if(j-i+1>result.length())
                         result=s.substring(i,j+1);
